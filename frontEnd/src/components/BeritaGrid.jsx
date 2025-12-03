@@ -1,37 +1,18 @@
-import { useState, useEffect } from "react";
-import { ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Heart, MessageSquare, ChevronRight } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import NewsData from "../data/NewsData";
 
 {/* BeritaGrid digunakan pada News Page */}
 const BeritaGrid = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [newsData, setNewsData] = useState([]);
-
-useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/news`)
-    .then((res) => res.json())
-    .then((res) => {
-      const formatted = res.data.map((item) => ({
-        id: item.id,
-        judul: item.title,
-        paragraf: item.content,
-        gambar: `https://api.hmtppns.my.id/storage/${item.image}`,
-        tanggal: item.published_at,
-        like: 0,      // Placeholder
-        comment: 0,   // Placeholder
-      }));
-      setNewsData(formatted);
-    })
-    .catch((err) => console.error("Failed to fetch news:", err));
-}, []);
-
-  const itemsPerPage = 12;
-  const paginatedData = newsData.slice(
+  const itemsPerPage = 8;
+  const paginatedData = NewsData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const totalPages = Math.ceil(newsData.length / itemsPerPage);
+  const totalPages = Math.ceil(NewsData.length / itemsPerPage);
 
   return (
     <div className="flex flex-col mx-auto">
@@ -54,11 +35,20 @@ useEffect(() => {
             </p>
 
             <div className="flex flex-col justify-self-end">
-              <div className="flex items-center justify-start text-xs">
+              <hr className="border-neutral-300 w-full my-2" />
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex gap-4 items-center">
+                  <span className="flex items-center gap-1 ">
+                    <Heart size={18} /> {news.like}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MessageSquare size={18} /> {news.comment}
+                  </span>
+                </div>
+
                 <Link
-                  to={`/news/${news.id}`}
+                  to={`/news/${index}`}
                   className="bg-gray-100 text-gray-800 px-1 md:px-2 lg:px-3 py-1 text-center text-xs rounded hover:bg-[#F66951] hover:text-white transition-ease-in-out duration-300"
-                  target="_blank"
                 >
                   Read More
                 </Link>

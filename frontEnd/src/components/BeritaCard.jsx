@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 
 { /* BeritaCard digunakan pada Home Page */ }
-const BeritaCard = ({ id, gambar, judul, paragraf, className, showParagraf = true }) => (
+const BeritaCard = ({ gambar, judul, index, paragraf, className, showParagraf = true }) => (
   <div
     className={`relative rounded-lg overflow-hidden group h-full ${className}`}
   >
@@ -16,7 +16,7 @@ const BeritaCard = ({ id, gambar, judul, paragraf, className, showParagraf = tru
         {judul}
       </h3>
       <Link
-        to={`/news/${id}`}
+        to={`/news/${index}`}
         className="text-white text-xs lg:text-sm underline underline-offset-2 hover:text-[#F66951] transition duration-200 cursor-pointer"
       >
         Read More &gt;
