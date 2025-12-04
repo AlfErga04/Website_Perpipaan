@@ -3,6 +3,7 @@ import { List } from 'lucide-react';
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import AlumniTable from "../components/AlumniTable";
+import AlumniJobCharts from '../components/AlumniJobCharts';
 import { useEffect } from 'react';
 
 
@@ -35,6 +36,11 @@ function Alumni() {
             </div>
             <div className="text-sm text-gray-300">Daftar alumni beserta tahun kelulusan</div>
         </div>
+
+              {/* Tambahkan chart di sini */}
+      <div className="flex justify-center h-50 w-full">
+        <AlumniJobCharts />
+      </div>
 
       <div className="items-center justify-center max-w-[75%] mx-auto mt-4 md:mt-12 mb-14 opacity-0 animate-[fadeIn_0.5s_forwards]">
         <AlumniTable/>
