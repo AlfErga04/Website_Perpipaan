@@ -30,7 +30,7 @@ function FormHima() {
         </div>
 
         {/* Form Section */}
-        <form className="max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-[90rem] mx-auto grid grid-cols-1 md:grid-cols-2 my-16 gap-y-8 gap-x-16 lg:gap-x-24 xl:gap-x-40">
+        <form className="max-w-sm md:max-w-2xl lg:max-w-4xl xl:max-w-[80rem] mx-auto grid grid-cols-1 md:grid-cols-2 my-16 gap-y-8 gap-x-16 lg:gap-x-24 xl:gap-x-40">
           {formFields.map((field) => (
             <div key={field.id}>
               <label htmlFor={field.id} className="block mb-2.5 text-sm font-medium text-heading">
@@ -70,12 +70,34 @@ function FormHima() {
               ) : null}
             </div>
           ))}
-          <div className="flex flex-row mx-auto gap-4">
-            <div className="bg-neutral-secondary-medium border border-default-medium text-heading text-base rounded-base focus:ring-brand focus:border-brand block w-fit px-4 py-3.5 shadow-xs placeholder:text-body rounded-lg">Kirim Pendaftaran</div>
-            <div className="bg-neutral-secondary-medium border border-default-medium text-heading text-base rounded-base focus:ring-brand focus:border-brand block w-fit px-4 py-3.5 shadow-xs placeholder:text-body rounded-lg">Batal</div>
-          </div>
         </form>
+        <div className="flex flex-row mx-auto gap-4 lg:gap-12 justify-center items-center my-16 text-center">
+  {/* Kirim Pendaftaran */}
+  <button
+    className="cursor-pointer border text-heading text-base rounded-base block w-fit lg:w-[20rem] px-4 py-3.5 shadow-xs rounded-lg
+    hover:bg-[#F66951] hover:text-white hover:shadow-sm
+    transition-all duration-200 ease-in-out hover:border-[#F66951]"
+  >
+    Kirim Pendaftaran
+  </button>
 
+  {/* Batal */}
+  <button
+    className="cursor-pointer  border border-default-medium text-base rounded-base block w-fit lg:w-[20rem] text-heading px-4 py-3.5 shadow-xs rounded-lg
+    hover:bg-white hover:border-[#F66951] hover:text-[#F66951] hover:shadow-sm
+    transition-all duration-200 ease-in-out"
+  >
+    Batal
+  </button>
+</div>
+
+
+{/* Bottom Section */}
+          <div className="w-fit mx-auto h-fit my-8">
+            <div className="mx-auto text-center border border-[#F66951] border-b-0 border-r-0 border-l-0 p-8">Pastikan semua data yang sudah anda masukkan sudah benar sebelum mengirim pendaftaran.</div>
+          </div>
+          
+        
         <Footer />
       </div>
     </>
