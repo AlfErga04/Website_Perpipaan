@@ -1,34 +1,20 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { ChevronRight } from "lucide-react";
-import { useEffect} from "react";
+import AlumniData from "../data/AlumniData";
 
 const AlumniTable = () => {
-  const [alumniData, setAlumniData] = useState([]);
-
-useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/alumni`)
-    .then((res) => res.json())
-    .then((res) => {
-      // Adaptasi struktur data dari backend ke format frontend kamu
-      const formatted = res.data.map((a) => ({
-        nrp: a.nim,
-        nama: a.name,
-        tahunMasuk: a.tahun_masuk,
-        tahunLulus: a.tahun_lulus,
-      }));
-      setAlumniData(formatted);
-    })
-    .catch((err) => console.error("Failed to fetch alumni", err));
-}, []);
-
+  const [selectedAngkatan, setSelectedAngkatan] = useState("");
   const [searchNRP, setSearchNRP] = useState("");
   const [selectedRows, setSelectedRows] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  { /* Filter  Data Alumni dengan NRP */ }
-  const filteredData = alumniData
+  { /* Filter  Data Alumni dengan angkatan atau NRP */ }
+  const filteredData = AlumniData
+    .filter((alumni) =>
+      selectedAngkatan ? alumni.tahunMasuk === selectedAngkatan : true
+    )
     .filter((alumni) => (searchNRP ? alumni.nrp.includes(searchNRP) : true));
 
   { /* Menampilkan 1 page berdasarkan item per page */ }
@@ -52,7 +38,24 @@ useEffect(() => {
   return (
     <div className="justify-between">
       <div className="flex flex-col md:flex-row justify-between gap-4">
-      
+        {/* Cari Angkatan */}
+        <select
+          className="p-2 rounded-lg bg-white text-black w-auto md:w-52"
+          value={selectedAngkatan}
+          onChange={(e) => {
+            setCurrentPage(1);
+            setSelectedAngkatan(e.target.value);
+          }}
+        >
+          <option value="">Angkatan</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+        </select>
+
         {/* Cari NRP */}
         <div className="flex justify-between border rounded-full bg-white px-6 py-2 w-full md:w-80">
           <input
@@ -95,6 +98,7 @@ useEffect(() => {
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2">Tahun masuk</th>
               <th className="px-4 py-2">Tahun lulus</th>
+              <th className="px-4 py-2">Keterangan</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-600 text-center text-xs sm:text-sm md:text-base lg:text-lg">
@@ -112,6 +116,7 @@ useEffect(() => {
                 <td className="px-4 py-2">{alumni.nama}</td>
                 <td className="px-4 py-2">{alumni.tahunMasuk}</td>
                 <td className="px-4 py-2">{alumni.tahunLulus}</td>
+                <td className="px-4 py-2">{alumni.keterangan}</td>
               </tr>
             ))}
           </tbody>

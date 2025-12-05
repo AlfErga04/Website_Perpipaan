@@ -60,6 +60,12 @@ const NavBar = () => {
             <li className="hover:text-white hover:bg-[#F66951] transition-ease-in-out duration-300 cursor-pointer px-4 py-2 rounded-full">
               <Link to="/data-alumni">Data Alumni</Link>
             </li>
+            <li className="hover:text-white hover:bg-[#F66951] transition-ease-in-out duration-300 cursor-pointer px-4 py-2 rounded-full">
+              <Link to="/merch">Merch</Link>
+            </li>
+            <li className="hover:text-white hover:bg-[#F66951] transition-ease-in-out duration-300 cursor-pointer px-4 py-2 rounded-full">
+              <Link to="/daftar-hima">Daftar Hima</Link>
+            </li>
           </ul>
         </nav>
       </div>
