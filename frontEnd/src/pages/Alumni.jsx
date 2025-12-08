@@ -37,8 +37,7 @@ function Alumni() {
             <div className="text-sm text-gray-300">Daftar alumni beserta tahun kelulusan</div>
         </div>
 
-              {/* Tambahkan chart di sini */}
-      <div className="flex justify-center h-50 w-full">
+      <div className="flex justify-center w-full h-65">
         <AlumniJobCharts />
       </div>
 

@@ -1,43 +1,83 @@
-import { useState } from "react";
-import { Search } from "lucide-react";
-import { ChevronRight } from "lucide-react";
-import AlumniData from "../data/AlumniData";
+import { useState, useEffect } from "react";
+import { Search, ChevronRight } from "lucide-react";
+import axios from "axios";
 
 const AlumniTable = () => {
+  const [alumni, setAlumni] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [selectedAngkatan, setSelectedAngkatan] = useState("");
   const [searchNRP, setSearchNRP] = useState("");
   const [selectedRows, setSelectedRows] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 7;
 
-  { /* Filter  Data Alumni dengan angkatan atau NRP */ }
-  const filteredData = AlumniData
-    .filter((alumni) =>
-      selectedAngkatan ? alumni.tahunMasuk === selectedAngkatan : true
-    )
-    .filter((alumni) => (searchNRP ? alumni.nrp.includes(searchNRP) : true));
+  // ================================
+  // FETCH DATA DARI BACKEND
+  // ================================
+useEffect(() => {
+  axios
+    .get(`${import.meta.env.VITE_API_URL}/alumni`, {
+      headers: {
+        Accept: "application/json",
+      },
+    })
+    .then((res) => {
+      const mapped = res.data.data.map((a) => ({
+        nrp: a.nim,
+        nama: a.name,
+        tahunMasuk: a.tahun_masuk,
+        tahunLulus: a.tahun_lulus,
+        jobSector: a.job_sector,
+        company: a.company_name,
+      }));
 
-  { /* Menampilkan 1 page berdasarkan item per page */ }
+      setAlumni(mapped);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Gagal fetch data alumni:", err);
+      setLoading(false);
+    });
+}, []);
+
+
+  if (loading) return <p className="text-white">Memuat data...</p>;
+
+  // ================================
+  // FILTER DATA (ANGKATAN & NRP)
+  // ================================
+  const filteredData = alumni
+    .filter((a) =>
+      selectedAngkatan ? a.tahunMasuk == selectedAngkatan : true
+    )
+    .filter((a) => (searchNRP ? a.nrp.includes(searchNRP) : true));
+
+  // ================================
+  // PAGINATION
+  // ================================
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // ================================
+  // CHECKBOX HANDLING
+  // ================================
   const handleCheckboxChange = (nrp) => {
     const updated = new Set(selectedRows);
-    if (updated.has(nrp)) {
-      updated.delete(nrp);
-    } else {
-      updated.add(nrp);
-    }
+    updated.has(nrp) ? updated.delete(nrp) : updated.add(nrp);
     setSelectedRows(updated);
   };
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
   return (
     <div className="justify-between">
+      {/* FILTER */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
+        
         {/* Cari Angkatan */}
         <select
           className="p-2 rounded-lg bg-white text-black w-auto md:w-52"
@@ -48,12 +88,11 @@ const AlumniTable = () => {
           }}
         >
           <option value="">Angkatan</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
+          {[2018, 2019, 2020, 2021, 2022, 2023].map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
         </select>
 
         {/* Cari NRP */}
@@ -68,39 +107,24 @@ const AlumniTable = () => {
               setSearchNRP(e.target.value);
             }}
           />
-          <Search className="flex justify-end text-black" />
+          <Search className="text-black" />
         </div>
       </div>
 
-      {/* Tabel */}
+      {/* TABEL */}
       <div className="overflow-x-auto mt-4 lg:mt-8 rounded-t-md md:rounded-t-lg">
         <table className="w-full">
           <thead className="bg-[#F66951] text-white text-xs md:text-base lg:text-lg">
             <tr>
-              <th className="px-4 py-2">
-                <input
-                  type="checkbox"
-                  className="accent-white"
-                  checked={paginatedData.every((a) => selectedRows.has(a.nrp))}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    const newSet = new Set(selectedRows);
-                    if (checked) {
-                      paginatedData.forEach((a) => newSet.add(a.nrp));
-                    } else {
-                      paginatedData.forEach((a) => newSet.delete(a.nrp));
-                    }
-                    setSelectedRows(newSet);
-                  }}
-                />
-              </th>
+              <th className="px-4 py-2">✓</th>
               <th className="px-4 py-2">NRP</th>
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2">Tahun masuk</th>
               <th className="px-4 py-2">Tahun lulus</th>
-              <th className="px-4 py-2">Keterangan</th>
+              <th className="px-4 py-2">PT Bekerja</th> {/* ⬅️ Kolom Baru */}
             </tr>
           </thead>
+
           <tbody className="divide-y divide-gray-600 text-center text-xs sm:text-sm md:text-base lg:text-lg">
             {paginatedData.map((alumni, index) => (
               <tr key={index}>
@@ -112,18 +136,19 @@ const AlumniTable = () => {
                     onChange={() => handleCheckboxChange(alumni.nrp)}
                   />
                 </td>
+
                 <td className="px-4 py-2">{alumni.nrp}</td>
                 <td className="px-4 py-2">{alumni.nama}</td>
                 <td className="px-4 py-2">{alumni.tahunMasuk}</td>
                 <td className="px-4 py-2">{alumni.tahunLulus}</td>
-                <td className="px-4 py-2">{alumni.keterangan}</td>
+                <td className="px-4 py-2">{alumni.company}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination */}
+      {/* PAGINATION */}
       <div className="flex justify-center md:justify-end items-center mt-6 gap-2">
         {[...Array(totalPages)].map((_, i) => (
           <button
@@ -138,18 +163,18 @@ const AlumniTable = () => {
             {i + 1}
           </button>
         ))}
+
         <button
           className="bg-[#F66951] rounded-full cursor-pointer"
-          onClick={() => {
-            if (currentPage < totalPages) {
-              setCurrentPage(currentPage + 1);
-            }
-          }}
+          onClick={() =>
+            currentPage < totalPages && setCurrentPage(currentPage + 1)
+          }
         >
-          <ChevronRight className="w-5 h-5 text-black" />{" "}
+          <ChevronRight className="w-5 h-5 text-black" />
         </button>
       </div>
     </div>
   );
 };
+
 export default AlumniTable;

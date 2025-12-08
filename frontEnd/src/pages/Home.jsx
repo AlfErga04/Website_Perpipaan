@@ -8,21 +8,22 @@ import BeritaCard from "../components/BeritaCard";
 
 function Home() {
   const [newsData, setNewsData] = useState([]);
-
 useEffect(() => {
   fetch(`${import.meta.env.VITE_API_URL}/news`)
     .then((res) => res.json())
-    .then((res) => {
-      const formatted = res.data.map((item) => ({
+    .then((result) => {
+      const mapped = result.data.map((item) => ({
         id: item.id,
+        gambar: item.image_url,
         judul: item.title,
         paragraf: item.content,
-        gambar: `https://api.hmtppns.my.id/storage/${item.image}`,
       }));
-      setNewsData(formatted);
+
+      setNewsData(mapped);
     })
-    .catch((err) => console.error("Failed to fetch news", err));
+    .catch((err) => console.error("Fetch news error:", err));
 }, []);
+  
 
   return (
     <div className="bg-neutral-900 text-white min-w-screen">

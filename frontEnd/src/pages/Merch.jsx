@@ -1,22 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import MerchGrid from "../components/MerchGrid";
-import MerchData from "../data/MerchData";
 import Pagination from "../components/Pagination";
 
 function Merch() {
+  const [merchs, setMerchs] = useState([]);       // data dari backend
+  const [loading, setLoading] = useState(true);
+
   const [merchPage, setMerchPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(8);
 
+  // Fetch dari backend
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/merch`)
+    .then((res) => res.json())
+    .then((data) => {
+const mapped = data.map((item) => ({
+  image: item.image_url,
+  cardTitle: item.name,           // lowercase
+  cardDesc: item.description,     // lowercase
+  price: item.price,
+  countFavorite: 0,
+}));
+
+
+      setMerchs(mapped);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Fetch merch error:", err);
+      setLoading(false);
+    });
+}, []);
+
+  // Pagination logic
   const lastMerchData = merchPage * postPerPage;
   const firstMerchData = lastMerchData - postPerPage;
-  const currentMerchData = MerchData.slice(firstMerchData, lastMerchData);
+  const currentMerchData = merchs.slice(firstMerchData, lastMerchData);
+
+  if (loading) {
+    return (
+      <div className="bg-neutral-900 text-white min-w-screen text-center mt-20">
+        <p className="text-xl">Loading data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-neutral-900 text-white min-w-screen">
-      <div className="top-0">
-        <NavBar />
-      </div>
+      <NavBar />
 
       {/* Hero Section */}
       <div
@@ -38,19 +71,16 @@ function Merch() {
       </div>
 
       <MerchGrid datas={currentMerchData} />
+
       <Pagination
         postPerData={postPerPage}
-        totalData={MerchData.length}
-        classAdd={
-          "flex flex-row gap-x-2 max-w-[75%] mx-auto justify-end mb-20 mt-8"
-        }
+        totalData={merchs.length}
+        classAdd="flex flex-row gap-x-2 max-w-[75%] mx-auto justify-end mb-20 mt-8"
         setCurrentPage={setMerchPage}
         currentPage={merchPage}
       />
 
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
