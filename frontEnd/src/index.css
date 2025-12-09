@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/Coolvetica-Rg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: ultra-expanded;
+}
+
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/Coolvetica-Rg-It.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+  font-stretch: ultra-expanded;
+}
+
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/Coolvetica-Rg-Cond.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: ultra-expanded;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  font-family: 'Inter', 'Coolvetica', Helvetica, sans-serif;
+}
