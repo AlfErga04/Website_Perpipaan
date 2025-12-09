@@ -9,23 +9,37 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up(): void
-{
-    Schema::create('alumni', function (Blueprint $table) {
-        $table->id();
-        $table->string('nim')->unique();
-        $table->string('name');
-        $table->year('tahun_masuk');
-        $table->year('tahun_lulus');
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('alumni', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('nim')->unique();
+            $table->string('name');
+
+            $table->year('tahun_masuk');
+            $table->year('tahun_lulus');
+
+            $table->enum('job_sector', [
+                'maritim_perkapalan',
+                'migas',
+                'energi_listrik',
+                'kimia',
+                'konstruksi_infrastruktur',
+                'lain_lain',
+            ])->nullable();
+
+            $table->string('company_name')->nullable();
+
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('alumnis');
+        Schema::dropIfExists('alumni'); // diperbaiki (dulu: 'alumnis')
     }
 };

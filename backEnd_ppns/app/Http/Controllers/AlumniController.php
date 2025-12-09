@@ -12,9 +12,11 @@ class AlumniController extends Controller
      */
     public function index()
     {
+        $alumni = Alumni::orderBy('tahun_lulus', 'desc')->get();
+
         return response()->json([
             'status' => 'success',
-            'data' => Alumni::orderBy('tahun_lulus', 'desc')->get()
+            'data'   => $alumni
         ]);
     }
 
@@ -25,34 +27,41 @@ class AlumniController extends Controller
     {
         $total = Alumni::count();
 
+        // Jika tidak ada data
         if ($total === 0) {
             return response()->json([
                 'status' => 'success',
-                'data' => []
+                'data'   => [],
+                'message' => 'Tidak ada data alumni.'
             ]);
         }
 
-        // Kategori job_sector yang tersedia
+        // Daftar kategori job_sector
         $categories = [
             'maritim_perkapalan',
             'migas',
             'energi_listrik',
             'kimia',
             'konstruksi_infrastruktur',
+            'lain_lain'
         ];
 
         $result = [];
 
         foreach ($categories as $cat) {
             $count = Alumni::where('job_sector', $cat)->count();
-            $percentage = ($count / $total) * 100;
+            $percentage = $count > 0 ? round(($count / $total) * 100, 2) : 0;
 
-            // Simpan data dengan format angka dua desimal
-            $result[$cat] = round($percentage, 2);
+            $result[] = [
+                'sector' => $cat,
+                'count' => $count,
+                'percentage' => $percentage
+            ];
         }
 
         return response()->json([
             'status' => 'success',
+            'total_alumni' => $total,
             'data' => $result
         ]);
     }

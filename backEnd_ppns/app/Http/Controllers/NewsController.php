@@ -10,9 +10,14 @@ class NewsController extends Controller
 {
     public function index()
     {
+    $news = News::latest()->get()->map(function($item){
+        $item->image_url = $item->image ? url('storage/' . $item->image) : null;
+        return $item;
+    });
+
     return response()->json([
         'status' => 'success',
-        'data' => News::latest()->get()
+        'data' => $news
     ]);
     }
 

@@ -18,4 +18,12 @@ class News extends Model
         protected $casts = [
         'published_at' => 'date',
     ];
+
+    public function getImageUrlAttribute()
+{
+    return $this->image 
+        ? url('storage/' . $this->image)
+        : null;
+}
+
 }

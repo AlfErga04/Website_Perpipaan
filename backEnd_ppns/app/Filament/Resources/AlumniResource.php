@@ -3,25 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AlumniResource\Pages;
-use App\Filament\Resources\AlumniResource\RelationManagers;
 use App\Models\Alumni;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\DateTimeColumn;
 use Filament\Forms\Components\Select;
-
-
+use Filament\Tables\Columns\TextColumn;
 
 class AlumniResource extends Resource
 {
@@ -31,8 +21,7 @@ class AlumniResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
+        return $form->schema([
             TextInput::make('nim')
                 ->label('NIM')
                 ->required()
@@ -44,27 +33,76 @@ class AlumniResource extends Resource
                 ->required()
                 ->maxLength(100),
 
+            // Tahun Masuk
             Select::make('tahun_masuk')
                 ->label('Tahun Masuk')
-                ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
+                ->options(array_combine(
+                    range(date('Y'), 1990),
+                    range(date('Y'), 1990)
+                ))
                 ->required(),
 
+            // Tahun Lulus
             Select::make('tahun_lulus')
                 ->label('Tahun Lulus')
-                ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
+                ->options(array_combine(
+                    range(date('Y'), 1990),
+                    range(date('Y'), 1990)
+                ))
                 ->required(),
-            ]);
+
+            // Sektor Pekerjaan
+            Select::make('job_sector')
+                ->label('Sektor Pekerjaan')
+                ->options([
+                    'maritim_perkapalan' => 'Industri maritim & perkapalan',
+                    'migas' => 'Industri migas',
+                    'energi_listrik' => 'Energi dan listrik',
+                    'kimia' => 'Industri kimia',
+                    'konstruksi_infrastruktur' => 'Konstruksi & infrastruktur',
+                    'lain_lain' => 'Lain-lain'
+                ])
+                ->searchable()
+                ->required(),
+
+            // Tambahan baru — tempat bekerja
+            TextInput::make('company_name')
+                ->label('Tempat Bekerja')
+                ->maxLength(255)
+                ->placeholder('Contoh: Pertamina, PLN, Waskita')
+                ->nullable(),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-            TextColumn::make('nim')->sortable()->searchable(),
-            TextColumn::make('name')->label('Nama')->sortable()->searchable(),
-            TextColumn::make('tahun_masuk')->label('Masuk'),
-            TextColumn::make('tahun_lulus')->label('Lulus'),
-            TextColumn::make('created_at')->label('Dibuat')->dateTime('d M Y'),
+                TextColumn::make('nim')
+                    ->label('NIM')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('tahun_masuk')
+                    ->label('Masuk'),
+
+                TextColumn::make('tahun_lulus')
+                    ->label('Lulus'),
+
+                // Kolom baru tempat bekerja
+                TextColumn::make('company_name')
+                    ->label('Tempat Bekerja')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime('d M Y'),
             ])
             ->filters([
                 //
@@ -81,9 +119,7 @@ class AlumniResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
