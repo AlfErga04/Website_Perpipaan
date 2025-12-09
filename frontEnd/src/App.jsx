@@ -10,6 +10,7 @@ import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Register from "./pages/Register.jsx";
+import ProfileOrder from "./pages/ProfileOrder.jsx";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop.jsx";
@@ -29,6 +30,7 @@ function App() {
         <Route path="/merch" element={<Merch />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile-order" element={<ProfileOrder />} />
         <Route
           path="/dashboard"
           element={
