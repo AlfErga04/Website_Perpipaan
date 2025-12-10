@@ -21,9 +21,10 @@ export default function Register() {
       });
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/dashboard");
     } catch (err) {
-      alert("Register gagal!");
+      alert(err.response?.data?.message || "Register gagal!");
       console.log(err);
     }
   };
@@ -71,6 +72,8 @@ export default function Register() {
             className="w-full bg-neutral-800 border border-neutral-700 text-white p-3 rounded focus:outline-none focus:border-[#F66951]"
             onChange={(e) => setEmail(e.target.value)}
           />
+
+          <input type="dropdown" ></input>
 
           <input
             type="password"

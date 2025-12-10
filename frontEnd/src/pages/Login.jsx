@@ -23,11 +23,12 @@ export default function Login() {
 
       // simpan token ke localStorage
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       // redirect ke dashboard
       navigate("/dashboard");
     } catch (err) {
-      setError(String(err));
+      setError(err.response?.data?.message || "Login gagal");
     }
   };
 
@@ -72,6 +73,7 @@ export default function Login() {
             Login
           </button>
         </form>
+        {error && <p className="text-red-400 text-center mb-4">{error}</p>}
 
         <p className="text-center text-sm text-gray-400 mt-6">
           Belum punya akun?{" "}
