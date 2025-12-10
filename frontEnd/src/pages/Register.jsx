@@ -8,6 +8,7 @@ export default function Register() {
   const [nim, setNim] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("male");
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ export default function Register() {
         email,
         password,
         nim,
+        gender,
       });
 
       localStorage.setItem("token", res.data.token);
@@ -73,7 +75,14 @@ export default function Register() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input type="dropdown" ></input>
+          <select
+            name="gender"
+            onChange={(e) => setGender(e.target.value)}
+            className="w-full bg-neutral-800 border border-neutral-700 text-white p-3 rounded focus:outline-none focus:border-[#F66951]"
+          >
+            <option value={"male"}>Laki Laki</option>
+            <option value={"female"}>Perempuan</option>
+          </select>
 
           <input
             type="password"

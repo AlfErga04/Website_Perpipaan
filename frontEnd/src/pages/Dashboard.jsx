@@ -87,8 +87,9 @@ export default function AccountDashboard() {
 
               <div className="space-y-4 text-sm">
                 <Detail label="Username" value={user?.name} />
+                <Detail label="NIM" value={user?.nim} />
                 <Detail label="Email" value={user?.email} />
-                <Detail label="Gender" value="Male" />
+                <Detail label="Gender" value={user?.gender} />
               </div>
             </div>
           </div>
