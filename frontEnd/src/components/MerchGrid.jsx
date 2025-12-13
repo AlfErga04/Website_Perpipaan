@@ -60,7 +60,7 @@ const SingleCard = ({
         className="mb-2 overflow-hidden rounded-sm shadow-1 duration-300 hover:shadow-3 dark:bg-dark-2 dark:shadow-card dark:hover:shadow-3 border-[0.5px] border-white text-left h-full hover:bg-[#F66951]"
         onClick={() => setShowModal(true)}
       >
-        <div className="w-full h-[50%] bg-amber-400">
+        <div className="w-full max-w-xl h-[50%] bg-amber-400">
           <img
             src={image}
             alt=""
@@ -82,7 +82,7 @@ const SingleCard = ({
               <h3 className="mb-[10%] font-bold my-2">{formattedPrice}</h3>
             </div>
             <div>
-              <hr className="mb-6"></hr>
+              <hr className="mb-3"></hr>
             </div>
           </div>
           <div className="flex flex-row justify-between h-[30%] items-center">

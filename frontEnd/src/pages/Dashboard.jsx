@@ -3,9 +3,14 @@ import { IoCopyOutline } from "react-icons/io5";
 import { useState } from "react";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import OrderData from "../data/OrderData";
+import OrderCard from "../components/OrderCard";
+import DetailOrder from "../components/DetailOrder";
 
 export default function AccountDashboard() {
   const [activeMenu, setActiveMenu] = useState("account");
+  const [isOrderDetail, setIsOrderDetail] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   let user = JSON.parse(localStorage.getItem("user"));
 
   return (
@@ -24,10 +29,9 @@ export default function AccountDashboard() {
             <button
               onClick={() => setActiveMenu("account")}
               className={`flex items-center gap-3 w-full mt-6 py-3 rounded-lg justify-center font-semibold transition
-                ${
-                  activeMenu === "account"
-                    ? "bg-[#E56F56] text-white cursor-default"
-                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${activeMenu === "account"
+                  ? "bg-[#E56F56] text-white cursor-default"
+                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
               `}>
               <FaUser /> My Account
@@ -37,10 +41,9 @@ export default function AccountDashboard() {
             <button
               onClick={() => setActiveMenu("order")}
               className={`flex items-center gap-3 w-full mt-4 py-3 rounded-lg justify-center transition
-                ${
-                  activeMenu === "order"
-                    ? "bg-[#E56F56] text-white cursor-default"
-                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${activeMenu === "order"
+                  ? "bg-[#E56F56] text-white cursor-default"
+                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
               `}>
               <FaHistory /> My Order
@@ -99,207 +102,54 @@ export default function AccountDashboard() {
             )}
 
             {/* ======= MY ORDER SECTION ======= */}
-            {activeMenu === "order" && (
-              <div className="p-4 text-sm font-semibold">
-                <div className="flex flex-row gap-x-2">
-                  <FaArrowLeft className="mt-0.5 sm:mt-1 w-3 h-3" />
-                  <div className="">My Order</div>
-                </div>
-                <div className="flex flex-col gap-x-2 mt-2 sm:mt-4">
-                  <div className="text-lg sm:text-4xl text-[#E56F56] text-uppercase">
+            {activeMenu === "order" && !isOrderDetail && (
+              <div id="order">
+                <button
+                  onClick={() => setActiveMenu("account")}
+                  className="flex items-center gap-2 text-gray-300 mb-6 hover:underline"
+                >
+                  <FaArrowLeft /> Back to My Account
+                </button>
+
+                <h1 className="text-3xl font-bold text-[#E56F56] mb-4">
+                  MY ORDER
+                </h1>
+
+                {!OrderData.length ? (
+                  <p className="text-gray-300">You have no orders yet.</p>
+                ) : (
+                  OrderData.map((order) => (
+                    <OrderCard key={order.id} orderDetail={order} setIsOrderDetail={setIsOrderDetail} onSelect={(data) => { setSelectedOrder(data) }} />
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* ======= ORDER DETAIL SECTION ======= */}
+            {isOrderDetail && selectedOrder && (
+              <div>
+                <button
+                  onClick={() => setIsOrderDetail(false)}
+                  className="flex items-center gap-2 text-gray-300 mb-6 hover:underline"
+                >
+                  <FaArrowLeft /> Back to My Orders
+                </button>
+
+                <div className="flex flex-row justify-between items-center mb-3">
+                  <h1 className="text-3xl font-bold text-[#E56F56] mb-4">
                     ORDER DETAIL
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* Status - Waiting Confirmation */}
-                    <div className="text-[#FDC46F] font-semibold text-sm sm:text-lg text-uppercase">
-                      Waiting Confirmation
-                    </div>
-                    <div className="justify-between text flex flex-row mt-4">
-                      <div className="text-white font-light text-xs">
-                        Order ID
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        #448230076
-                      </div>
-                    </div>
-                    <div className="justify-between text flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Purchase Date
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        03 September 2024, 10.12
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* Status - Order Delivered*/}
-                    <div className="text-[#17AA1A] font-semibold text-sm sm:text-lg text-uppercase">
-                      Order Delivered
-                    </div>
-                    <div className="justify-between text flex flex-row mt-4">
-                      <div className="text-white font-light text-xs">
-                        Order ID
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        #448230076
-                      </div>
-                    </div>
-                    <div className="justify-between text flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Purchase Date
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        03 September 2024, 10.12
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* Status - Order Cancelled*/}
-                    <div className="text-red-600 font-semibold text-sm sm:text-lg text-uppercase">
-                      Order Cancelled
-                    </div>
-                    <div className="justify-between text flex flex-row mt-4">
-                      <div className="text-white font-light text-xs">
-                        Order ID
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        #448230076
-                      </div>
-                    </div>
-                    <div className="justify-between text flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Purchase Date
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        03 September 2024, 10.12
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* Status - Order Processed*/}
-                    <div className="text-blue-600 font-semibold text-sm sm:text-lg text-uppercase">
-                      Order Processed
-                    </div>
-                    <div className="justify-between text flex flex-row mt-4">
-                      <div className="text-white font-light text-xs">
-                        Order ID
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        #448230076
-                      </div>
-                    </div>
-                    <div className="justify-between text flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Purchase Date
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        03 September 2024, 10.12
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* User Order */}
-                    <div className="text-white font-semibold text-sm sm:text-lg text-uppercase">
-                      Your Order
-                    </div>
-                    <div className="flex sm:flex-row flex-col mt-4 justify-between items-center">
-                      {/* Kotak putih di kiri */}
-                      <div
-                        className="md:w-48 md:h-48 w-24 h-24 bg-cover bg-center"
-                        style={{
-                          backgroundImage: "url('/merch/placeholder.webp')",
-                        }}></div>
+                  </h1>
+                  <button className="px-7 py-2 bg-[#F66951] text-white rounded-full font-light">Selesaikan Pesanan</button>
+                </div>
 
-                      {/* Section teks di kanan */}
-                      <div className="flex flex-col text-xs font-light text-white text-right gap-y-2">
-                        <div>Table</div>
-                        <div>TerraNest Dining Table</div>
-                        <div>Qty: 1</div>
-                        <div>1 x Rp 1.115.000</div>
-                      </div>
-                    </div>
-                    <div className="text-white font-semibold text-sm sm:text-lg text-uppercase mt-12">
-                      Shipping Info
-                    </div>
-                    <div className="text-white font-light text-sm sm:text-base text-uppercase mt-4">
-                      Courier{" "}
-                      <span className="ml-0 sm:ml-12">
-                        :{" "}
-                        <span className="ml-0 sm:ml-12">
-                          JNE Express - Regular
-                        </span>
-                      </span>
-                    </div>
-                    <div className="text-white font-light text-sm sm:text-base text-uppercase mt-1">
-                      <div className="flex flex-row text-xs ml-0 sm:ml-[10.2rem] text-[#9E9E9E]">
-                        <div className="underline">JN67910720</div>
-                        <IoCopyOutline className="mt-0.5 ml-1" />
-                      </div>
-                    </div>
-                    <div className="text-white font-light text-sm sm:text-base text-uppercase mt-4">
-                      Address <span className="ml-0 sm:ml-11">:</span>
-                      <div className="w-fit max-w-md ml-0 sm:ml-40 sm:-translate-y-6 -translate-y-0">
-                        Jl. Mawar Merah No. 10, RT 03/RW 05, Menteng, Jakarta
-                        Pusat, DKI Jakarta 10310
-                      </div>
-                    </div>
-                    <div className="text-white font-light text-sm sm:text-base text-uppercase mt-4">
-                      <div className="flex flex-row text-xs ml-0 sm:ml-[10.2rem]"></div>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-[#1a1a1a] p-6 rounded-lg">
-                    {/* Status */}
-                    <div className="text-[#FDC46F] font-semibold text-sm sm:text-lg text-uppercase">
-                      Order Summary
-                    </div>
+                <div>
+                  <DetailOrder orderData={selectedOrder} />
+                </div>
 
-                    {/* Harga per item */}
-                    <div className="justify-between flex flex-row mt-4">
-                      <div className="text-white font-light text-xs">
-                        Harga / Item
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        Rp 115.000
-                      </div>
-                    </div>
-
-                    {/* Quantity */}
-                    <div className="justify-between flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Quantity
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button className="w-6 h-6 flex items-center justify-center text-white border border-white rounded hover:bg-white hover:text-black transition">
-                          -
-                        </button>
-
-                        <div className="text-white font-light text-xs">1</div>
-
-                        <button className="w-6 h-6 flex items-center justify-center text-white border border-white rounded hover:bg-white hover:text-black transition">
-                          +
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Total */}
-                    <div className="justify-between flex flex-row mt-2">
-                      <div className="text-white font-light text-xs">
-                        Total Harga
-                      </div>
-                      <div className="text-white font-light text-xs">
-                        Rp 115.000
-                      </div>
-                    </div>
-                    <div className="flex flex-row max-w-md gap-x-4 mx-auto ">
-                      <button className="mt-6 bg-[#E56F56] w-full p-4 rounded-full font-semibold hover:bg-[#e56e5682] transition">
-                        Back
-                      </button>
-                      <button className="mt-6 bg-[#E56F56] w-full p-4 rounded-full font-semibold hover:bg-[#e56e5682] transition">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
+                <div className="mt-12 p-4 bg-[#1a1a1a] rounded-xl border border-[0.5px] border-[#E56F56] text-slate-50 transition-all duration-300 hover:shadow-lg hover:shadow-[#f6695133] hover:scale-[1.01] active:scale-[0.99]">
+                  <p>Note :</p>
+                  <p>Barang yang sudah dibeli tidak dapat direfund atau dikembalikan</p>
+                  <p>Setelah status barang "Siap Diambil", Silahkan diambil pada <span className="font-bold text-[#E56F56]">Gedung HIMA</span> kita</p>
                 </div>
               </div>
             )}
@@ -319,3 +169,5 @@ function Detail({ label, value }) {
     </div>
   );
 }
+
+
