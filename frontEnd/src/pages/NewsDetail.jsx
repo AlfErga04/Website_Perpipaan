@@ -23,7 +23,7 @@ useEffect(() => {
       const item = res.data;
       setNews({
         judul: item.title,
-        gambar: `https://api.hmtppns.my.id/storage/${item.image}`,
+        gambar: `https://db.hmtppns.my.id/storage/${item.image}`,
         paragraf: item.content,
         tanggal: item.published_at,
         penulis: "Admin Hima",
