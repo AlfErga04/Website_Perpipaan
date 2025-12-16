@@ -1,7 +1,7 @@
 const MerchData = [
   {
     id: 120967,
-    image: "/public/order/kaos_placeholder.jpg",
+    image: "/order/kaos_placeholder.jpg",
     cardTitle: "Beneran Kaos Polos",
     countFavorite: 100,
     price: 1000000,
@@ -11,9 +11,8 @@ const MerchData = [
   },
   {
     id: 215802,
-    image: "/public/order/botol_placeholder.jpg",
-    cardTitle:
-      "Bukan Botol Minum",
+    image: "/order/botol_placeholder.jpg",
+    cardTitle: "Bukan Botol Minum",
     countFavorite: 100,
     price: 1000000,
     dataTersisa: 10,
@@ -22,7 +21,7 @@ const MerchData = [
   },
   {
     id: 253804,
-    image: "/public/order/topi_placeholder.jpg",
+    image: "/order/topi_placeholder.jpg",
     cardTitle: "Topinya Yukinoshita",
     countFavorite: 100,
     price: 1000000,
@@ -32,7 +31,7 @@ const MerchData = [
   },
   {
     id: 999222,
-    image: "/public/order/case_placeholder.jpg",
+    image: "/order/case_placeholder.jpg",
     cardTitle: "Case Handphone Keren",
     countFavorite: 100,
     price: 1000000,
@@ -42,7 +41,7 @@ const MerchData = [
   },
   {
     id: 247931,
-    image: "/public/order/thumbler_placeholder.jpg",
+    image: "/order/thumbler_placeholder.jpg",
     cardTitle: "Tumbler Kopken Kenangan",
     countFavorite: 100,
     price: 1000000,
@@ -52,7 +51,7 @@ const MerchData = [
   },
   {
     id: 120967,
-    image: "/public/order/kaos_placeholder.jpg",
+    image: "/order/kaos_placeholder.jpg",
     cardTitle: "Beneran Kaos Polos",
     countFavorite: 100,
     price: 1000000,
@@ -62,9 +61,8 @@ const MerchData = [
   },
   {
     id: 215802,
-    image: "/public/order/botol_placeholder.jpg",
-    cardTitle:
-      "Bukan Botol Minum",
+    image: "/order/botol_placeholder.jpg",
+    cardTitle: "Bukan Botol Minum",
     countFavorite: 100,
     price: 1000000,
     dataTersisa: 10,
@@ -73,7 +71,7 @@ const MerchData = [
   },
   {
     id: 253804,
-    image: "/public/order/topi_placeholder.jpg",
+    image: "/order/topi_placeholder.jpg",
     cardTitle: "Topinya Yukinoshita",
     countFavorite: 100,
     price: 1000000,
@@ -83,7 +81,7 @@ const MerchData = [
   },
   {
     id: 999222,
-    image: "/public/order/case_placeholder.jpg",
+    image: "/order/case_placeholder.jpg",
     cardTitle: "Case Handphone Keren",
     countFavorite: 100,
     price: 1000000,
@@ -93,7 +91,7 @@ const MerchData = [
   },
   {
     id: 247931,
-    image: "/public/order/thumbler_placeholder.jpg",
+    image: "/order/thumbler_placeholder.jpg",
     cardTitle: "Tumbler Kopken Kenangan",
     countFavorite: 100,
     price: 1000000,

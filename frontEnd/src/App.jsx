@@ -28,7 +28,14 @@ function App() {
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/data-alumni" element={<Alumni />} />
         <Route path="/merch" element={<Merch />} />
-        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route
+          path="/order-confirmation"
+          element={
+            <ProtectedRoute>
+              <OrderConfirmation />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/profile-order" element={<ProfileOrder />} />
         <Route

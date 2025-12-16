@@ -27,9 +27,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // Styling ahh type shit
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#F66951',
             ])
+            ->font('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', 'Inter')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

@@ -6,7 +6,7 @@ const OrderData = [
     status: "Order Dikonfirmasi",
     quantity: 2,
     price: 50000,
-    imgLink: "/public/order/kaos_placeholder.jpg",
+    imgLink: "/order/kaos_placeholder.jpg",
   },
   {
     id: 215802,
@@ -15,7 +15,7 @@ const OrderData = [
     status: "Order Dibuat",
     price: 75000,
     quantity: 1,
-    imgLink: "/public/order/botol_placeholder.jpg",
+    imgLink: "/order/botol_placeholder.jpg",
   },
   {
     id: 253804,
@@ -24,7 +24,7 @@ const OrderData = [
     status: "Order Dipacking",
     price: 50000,
     quantity: 3,
-    imgLink: "/public/order/topi_placeholder.jpg",
+    imgLink: "/order/topi_placeholder.jpg",
   },
   {
     id: 999222,
@@ -33,7 +33,7 @@ const OrderData = [
     status: "Order Siap Diambil",
     price: 45000,
     quantity: 5,
-    imgLink: "/public/order/case_placeholder.jpg",
+    imgLink: "/order/case_placeholder.jpg",
   },
   {
     id: 247931,
@@ -42,7 +42,7 @@ const OrderData = [
     status: "Order Ditolak",
     price: 30000,
     quantity: 4,
-    imgLink: "/public/order/thumbler_placeholder.jpg",
+    imgLink: "/order/thumbler_placeholder.jpg",
   },
 ];
 

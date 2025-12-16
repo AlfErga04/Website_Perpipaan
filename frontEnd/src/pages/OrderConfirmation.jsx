@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import MerchData from "../data/MerchData";
 import Alert from "../components/Alert";
 
 export default function OrderConfirmation() {
-  const [searchParams] = useSearchParams();
-  const itemID = searchParams.get("itemID") || "";
-  const quantity = searchParams.get("quantity") || 1;
+  // const [searchParams] = useSearchParams();
+  // const itemID = searchParams.get("itemID") || "";
+  // const quantity = searchParams.get("quantity") || 1;
+
+  const location = useLocation();
+  const { productId, quantity } = location.state;
 
   const itemName =
-    MerchData.find((item) => item.id === Number(itemID))?.cardTitle ||
+    MerchData.find((item) => item.id === Number(productId))?.cardTitle ||
     "Unknown Item";
+
   const [form, setForm] = useState({
     name: "",
     studentId: "",
@@ -25,14 +29,14 @@ export default function OrderConfirmation() {
     e.preventDefault();
     console.log({
       ...form,
-      itemID,
+      productId,
       quantity,
     });
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-xl p-6">
-      {console.log(itemID)}
+      {console.log(productId)}
       <div className="flex flex-row justify-between">
         <h2 className="text-xl font-semibold mb-6">Order Confirmation</h2>
         <button
@@ -45,7 +49,7 @@ export default function OrderConfirmation() {
 
       {/* Order Detail from URL */}
       <div className="mb-6 bg-gray-50 p-4 rounded-md">
-        {console.log(MerchData.find((item) => item.id === Number(itemID)))}
+        {console.log(MerchData.find((item) => item.id === Number(productId)))}
         <p className="font-medium">
           Product: <span className="text-[#F66951]">{itemName}</span>
         </p>

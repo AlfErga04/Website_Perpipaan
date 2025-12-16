@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MerchPopup = ({
   id,
@@ -64,6 +65,8 @@ const MerchPopup = ({
     currency: "IDR",
     minimumFractionDigits: 0,
   }).format(unitPrice);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -137,10 +140,18 @@ const MerchPopup = ({
                   alert("Anda memesan melebihi stok yang tersedia!");
                   return;
                 }
+
                 // Process to OrderConfirmation page
-                window.location.href = `/order-confirmation?itemID=${encodeURIComponent(
-                  id
-                )}&quantity=${encodeURIComponent(count)}`;
+                // window.location.href = `/order-confirmation?itemID=${encodeURIComponent(
+                //   id
+                // )}&quantity=${encodeURIComponent(count)}`;
+
+                navigate("/order-confirmation", {
+                  state: {
+                    productId: id,
+                    quantity: count,
+                  },
+                });
               }}
             >
               <img src="/merch/cart.svg" className="w-7" />

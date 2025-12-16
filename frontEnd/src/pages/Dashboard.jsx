@@ -29,11 +29,13 @@ export default function AccountDashboard() {
             <button
               onClick={() => setActiveMenu("account")}
               className={`flex items-center gap-3 w-full mt-6 py-3 rounded-lg justify-center font-semibold transition
-                ${activeMenu === "account"
-                  ? "bg-[#E56F56] text-white cursor-default"
-                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${
+                  activeMenu === "account"
+                    ? "bg-[#E56F56] text-white cursor-default"
+                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
-              `}>
+              `}
+            >
               <FaUser /> My Account
             </button>
 
@@ -41,12 +43,26 @@ export default function AccountDashboard() {
             <button
               onClick={() => setActiveMenu("order")}
               className={`flex items-center gap-3 w-full mt-4 py-3 rounded-lg justify-center transition
-                ${activeMenu === "order"
-                  ? "bg-[#E56F56] text-white cursor-default"
-                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${
+                  activeMenu === "order"
+                    ? "bg-[#E56F56] text-white cursor-default"
+                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
-              `}>
+              `}
+            >
               <FaHistory /> My Order
+            </button>
+
+            <button
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = "/";
+              }}
+              className={`flex items-center gap-3 w-full mt-4 py-3 rounded-lg justify-center transition
+                ${"border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"}
+              `}
+            >
+              Log out!
             </button>
           </div>
 
@@ -68,7 +84,8 @@ export default function AccountDashboard() {
 
                   <button
                     className="mt-6 border border-[#E56F56] rounded-full px-8 py-3 font-semibold hover:bg-[#222] transition"
-                    onClick={() => alert("Coming soon")}>
+                    onClick={() => alert("Coming soon")}
+                  >
                     Ganti Photo Kamu
                   </button>
 
@@ -119,7 +136,14 @@ export default function AccountDashboard() {
                   <p className="text-gray-300">You have no orders yet.</p>
                 ) : (
                   OrderData.map((order) => (
-                    <OrderCard key={order.id} orderDetail={order} setIsOrderDetail={setIsOrderDetail} onSelect={(data) => { setSelectedOrder(data) }} />
+                    <OrderCard
+                      key={order.id}
+                      orderDetail={order}
+                      setIsOrderDetail={setIsOrderDetail}
+                      onSelect={(data) => {
+                        setSelectedOrder(data);
+                      }}
+                    />
                   ))
                 )}
               </div>
@@ -139,7 +163,9 @@ export default function AccountDashboard() {
                   <h1 className="text-3xl font-bold text-[#E56F56] mb-4">
                     ORDER DETAIL
                   </h1>
-                  <button className="px-7 py-2 bg-[#F66951] text-white rounded-full font-light">Selesaikan Pesanan</button>
+                  <button className="px-7 py-2 bg-[#F66951] text-white rounded-full font-light">
+                    Selesaikan Pesanan
+                  </button>
                 </div>
 
                 <div>
@@ -148,8 +174,17 @@ export default function AccountDashboard() {
 
                 <div className="mt-12 p-4 bg-[#1a1a1a] rounded-xl border border-[0.5px] border-[#E56F56] text-slate-50 transition-all duration-300 hover:shadow-lg hover:shadow-[#f6695133] hover:scale-[1.01] active:scale-[0.99]">
                   <p>Note :</p>
-                  <p>Barang yang sudah dibeli tidak dapat direfund atau dikembalikan</p>
-                  <p>Setelah status barang "Siap Diambil", Silahkan diambil pada <span className="font-bold text-[#E56F56]">Gedung HIMA</span> kita</p>
+                  <p>
+                    Barang yang sudah dibeli tidak dapat direfund atau
+                    dikembalikan
+                  </p>
+                  <p>
+                    Setelah status barang "Siap Diambil", Silahkan diambil pada{" "}
+                    <span className="font-bold text-[#E56F56]">
+                      Gedung HIMA
+                    </span>{" "}
+                    kita
+                  </p>
                 </div>
               </div>
             )}
@@ -169,5 +204,3 @@ function Detail({ label, value }) {
     </div>
   );
 }
-
-
