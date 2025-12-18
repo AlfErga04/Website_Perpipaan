@@ -9,13 +9,16 @@ class Order extends Model
 {
     //
     protected $fillable = [
-        'order_code',
+        'name',
         'user_id',
-        'order_status',
+        'no_whatsapp',
+        'ktm_path',
+        'id_order',
         'order_date',
-        'item_name',
+        'order_status',
+        'id_item',
         'quantity',
-        'price',
+        'admin_note',
     ];
 
     protected $casts = [

@@ -26,6 +26,7 @@ class MerchResource extends Resource
                 TextInput::make('name')->required(),
                 Textarea::make('description'),
                 TextInput::make('price')->numeric()->required(),
+                TextInput::make('quantity')->integer()->required(),
                 FileUpload::make('image')
                     ->directory('merch')
                     ->image()

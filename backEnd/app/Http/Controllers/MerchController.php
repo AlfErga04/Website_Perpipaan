@@ -23,6 +23,7 @@ class MerchController extends Controller
             'name'        => 'required',
             'description' => 'nullable',
             'price'       => 'required|integer',
+            'quantity'    => 'required|integer',
             'image'       => 'nullable|image|max:2048',
         ]);
 
@@ -41,6 +42,7 @@ class MerchController extends Controller
             'name'        => 'required',
             'description' => 'nullable',
             'price'       => 'required|integer',
+            'quantity'    => 'required|integer',
             'image'       => 'nullable|image|max:2048',
         ]);
 

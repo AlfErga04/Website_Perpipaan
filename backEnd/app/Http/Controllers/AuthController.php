@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
+use Laravel\Sanctum\HasApiTokens;
+
 class AuthController extends Controller
 {
     // Register function
@@ -31,7 +33,7 @@ class AuthController extends Controller
             'nim' => 'required|string|unique:users,nim',
             'gender' => 'required|string|max:10',
             'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
         $user = User::create([
@@ -45,6 +47,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User sukses dibuat!',
             'user' => $user,
+            'token' => $user->createToken("API TOKEN")->plainTextToken
         ], 201);
     }
 
@@ -58,7 +61,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Email atau password salah!',
             ], 401);
@@ -67,6 +70,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Login sukses!',
             'user' => $user,
+            'token' => $user->createToken("API TOKEN")->plainTextToken
         ], 200);
     }
 }

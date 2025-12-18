@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Merch extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'quantity',
+        'image',
+    ];
 }
