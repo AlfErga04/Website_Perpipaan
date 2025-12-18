@@ -10,15 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('form_himas', function (Blueprint $table) {
+        Schema::create('form_hima', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('name');
             $table->string('nim')->index();
-            $table->string('kelas')->nullable();
-            $table->string('angkatan')->nullable();
-            $table->text('alasan')->nullable();
-            $table->text('pengalaman')->nullable();
-            $table->json('file_names')->nullable();
+            $table->string('class');
+            $table->string('cohort');
+            $table->text('reason');
+            $table->text('experience');
+            $table->string('ktm_file');
+            $table->string('cv_file');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('form_himas');
+        Schema::dropIfExists('form_hima');
     }
 };

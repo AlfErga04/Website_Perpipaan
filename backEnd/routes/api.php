@@ -24,6 +24,8 @@ Route::get('/alumni/job-stats', [AlumniController::class, 'jobStats']);
 
 // Public form submission
 Route::post('/form-hima', [FormHimaController::class, 'store']);
+// Public check by nim
+Route::get('/form-hima/check', [FormHimaController::class, 'check']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'index']);
@@ -37,4 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/orders/{id}/complete', [OrderController::class, 'complete']);
     // Admin: view all form-hima submissions
     Route::get('/form-hima', [FormHimaController::class, 'index']);
+    // Admin: update form-hima status
+    Route::patch('/admin/form-hima/{id}', [FormHimaController::class, 'update']);
 });

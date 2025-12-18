@@ -6,19 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class FormHima extends Model
 {
-    protected $table = 'form_himas';
+    protected $table = 'form_hima';
 
     protected $fillable = [
-        'nama',
+        'name',
         'nim',
-        'kelas',
-        'angkatan',
-        'alasan',
-        'pengalaman',
-        'file_names',
-    ];
-
-    protected $casts = [
-        'file_names' => 'array',
+        'class',
+        'cohort',
+        'reason',
+        'experience',
+        'ktm_file',
+        'cv_file',
+        'status',
     ];
 }
