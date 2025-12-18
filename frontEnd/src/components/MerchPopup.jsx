@@ -19,6 +19,8 @@ const MerchPopup = ({
     ? Math.max(1, Number(dataTersisa))
     : Infinity;
 
+  const outOfStock = Number.isFinite(Number(dataTersisa)) && Number(dataTersisa) <= 0;
+
   // helper to parse formatted price strings (remove non-digits)
   const parseFormatted = (s) => {
     if (s == null) return 0;
@@ -134,17 +136,13 @@ const MerchPopup = ({
 
             {/* order button */}
             <div
-              className="bg-[#F66951] flex items-center gap-3 px-5 py-2 rounded-lg cursor-pointer basis-3/5"
+              className={`flex items-center gap-3 px-5 py-2 rounded-lg basis-3/5 ${outOfStock ? 'bg-gray-600 cursor-not-allowed opacity-60' : 'bg-[#F66951] cursor-pointer'}`}
               onClick={() => {
+                if (outOfStock) return;
                 if (count > maxCount) {
                   alert("Anda memesan melebihi stok yang tersedia!");
                   return;
                 }
-
-                // Process to OrderConfirmation page
-                // window.location.href = `/order-confirmation?itemID=${encodeURIComponent(
-                //   id
-                // )}&quantity=${encodeURIComponent(count)}`;
 
                 navigate("/order-confirmation", {
                   state: {

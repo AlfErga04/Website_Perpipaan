@@ -1,95 +1,108 @@
 { /* AlumniData utk coba" */ }
-const AlumniData = [
-  {
-    nrp: "111111111",
-    nama: "Joko Widodo",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "222222222",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "333333333",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-  {
-    nrp: "444444444",
-    nama: "John Doe",
-    tahunMasuk: "2018",
-    tahunLulus: "2022",
-  },
-];
+// const AlumniData = [
+//   {
+//     nrp: "111111111",
+//     nama: "Joko Widodo",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "222222222",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "333333333",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+//   {
+//     nrp: "444444444",
+//     nama: "John Doe",
+//     tahunMasuk: "2018",
+//     tahunLulus: "2022",
+//   },
+// ];
 
-export default AlumniData;
+// export default AlumniData;
+
+import axios from "axios";
+const API_ALUMNI = import.meta.env.VITE_API_URL + "/api/alumni";
+
+export const getAllAlumniData = async () => {
+  try {
+    const resp = await axios.get(API_ALUMNI);
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};

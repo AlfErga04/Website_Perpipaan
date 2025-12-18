@@ -3,6 +3,8 @@ import React from "react";
 import { createPortal } from "react-dom";
 import MerchPopup from "./MerchPopup";
 
+// const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const MerchGrid = ({ datas }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-6 justify-center max-w-[75%] mx-auto mt-4 md:mt-12 mb-6 opacity-0 animate-[fadeIn_0.5s_forwards] h-fit">
@@ -11,12 +13,11 @@ const MerchGrid = ({ datas }) => {
           <SingleCard
             key={index}
             id={data.id}
-            image={data.image}
-            CardTitle={data.cardTitle}
-            countFav={data.countFavorite}
+            image={import.meta.env.VITE_API_URL + "/storage/" + data.image}
+            CardTitle={data.name}
             price={data.price}
-            CardDescription={data.cardDesc}
-            dataTersisa={data.dataTersisa}
+            CardDescription={data.description}
+            dataTersisa={data.quantity}
           />
         );
       })}
@@ -29,7 +30,6 @@ export default MerchGrid;
 const SingleCard = ({
   id,
   image,
-  countFav,
   CardDescription,
   CardTitle,
   btnHref,
@@ -93,9 +93,6 @@ const SingleCard = ({
                 alt="love svg"
                 className="w-3 sm:w-4 md:w-5"
               />
-              <p className="text-xs sm:text-sm md:text-base font-normal">
-                {countFav}
-              </p>
             </div>
 
             {/* right side */}

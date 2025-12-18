@@ -15,6 +15,8 @@ import ProfileOrder from "./pages/ProfileOrder.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import "./index.css";
+import DashboardAdmin from "./pages/DashboardAdmin.jsx";
+import FormHima from "./pages/FormHima.jsx";
 
 function App() {
   return (
@@ -46,7 +48,23 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/dashboard-admin"
+          element={
+            <ProtectedRoute>
+              <DashboardAdmin />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/daftar-hima"
+          element={
+            <ProtectedRoute>
+              <FormHima />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </main>
   );

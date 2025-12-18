@@ -26,7 +26,11 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       // redirect ke dashboard
-      navigate("/dashboard");
+      if (email == "admin@gmail.com") {
+        navigate("/dashboard-admin")
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login gagal");
     }

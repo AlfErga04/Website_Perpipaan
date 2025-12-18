@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { ChevronRight } from "lucide-react";
-import AlumniData from "../data/AlumniData";
+import { getAllAlumniData } from "../data/AlumniData";
 
 const AlumniTable = () => {
   const [selectedAngkatan, setSelectedAngkatan] = useState("");
@@ -10,12 +10,24 @@ const AlumniTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
+  // Get alumni data
+  const [alumniData, setalumniData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const datas = await getAllAlumniData();
+      console.log("datas ", datas.data)
+      setalumniData(datas.data);
+    }
+    fetchData()
+  }, [])
+
   { /* Filter  Data Alumni dengan angkatan atau NRP */ }
-  const filteredData = AlumniData
+  const filteredData = alumniData
     .filter((alumni) =>
-      selectedAngkatan ? alumni.tahunMasuk === selectedAngkatan : true
+      selectedAngkatan ? alumni.tahun_masuk === selectedAngkatan : true
     )
-    .filter((alumni) => (searchNRP ? alumni.nrp.includes(searchNRP) : true));
+    .filter((alumni) => (searchNRP ? alumni.nim.includes(searchNRP) : true));
 
   { /* Menampilkan 1 page berdasarkan item per page */ }
   const paginatedData = filteredData.slice(
@@ -81,14 +93,14 @@ const AlumniTable = () => {
                 <input
                   type="checkbox"
                   className="accent-white"
-                  checked={paginatedData.every((a) => selectedRows.has(a.nrp))}
+                  checked={paginatedData.every((a) => selectedRows.has(a.nim))}
                   onChange={(e) => {
                     const checked = e.target.checked;
                     const newSet = new Set(selectedRows);
                     if (checked) {
-                      paginatedData.forEach((a) => newSet.add(a.nrp));
+                      paginatedData.forEach((a) => newSet.add(a.nim));
                     } else {
-                      paginatedData.forEach((a) => newSet.delete(a.nrp));
+                      paginatedData.forEach((a) => newSet.delete(a.nim));
                     }
                     setSelectedRows(newSet);
                   }}
@@ -98,7 +110,7 @@ const AlumniTable = () => {
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2">Tahun masuk</th>
               <th className="px-4 py-2">Tahun lulus</th>
-              <th className="px-4 py-2">Keterangan</th>
+              {/* <th className="px-4 py-2">Keterangan</th> */}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-600 text-center text-xs sm:text-sm md:text-base lg:text-lg">
@@ -108,15 +120,15 @@ const AlumniTable = () => {
                   <input
                     type="checkbox"
                     className="accent-[#F66951]"
-                    checked={selectedRows.has(alumni.nrp)}
-                    onChange={() => handleCheckboxChange(alumni.nrp)}
+                    checked={selectedRows.has(alumni.nim)}
+                    onChange={() => handleCheckboxChange(alumni.nim)}
                   />
                 </td>
-                <td className="px-4 py-2">{alumni.nrp}</td>
-                <td className="px-4 py-2">{alumni.nama}</td>
-                <td className="px-4 py-2">{alumni.tahunMasuk}</td>
-                <td className="px-4 py-2">{alumni.tahunLulus}</td>
-                <td className="px-4 py-2">{alumni.keterangan}</td>
+                <td className="px-4 py-2">{alumni.nim}</td>
+                <td className="px-4 py-2">{alumni.name}</td>
+                <td className="px-4 py-2">{alumni.tahun_masuk}</td>
+                <td className="px-4 py-2">{alumni.tahun_lulus}</td>
+                {/* <td className="px-4 py-2">{alumni.keterangan}</td> */}
               </tr>
             ))}
           </tbody>
@@ -129,11 +141,10 @@ const AlumniTable = () => {
           <button
             key={i}
             onClick={() => setCurrentPage(i + 1)}
-            className={`w-8 h-8 rounded border text-sm cursor-pointer ${
-              currentPage === i + 1
-                ? "bg-[#F66951] text-white"
-                : "text-white border-gray-500"
-            }`}
+            className={`w-8 h-8 rounded border text-sm cursor-pointer ${currentPage === i + 1
+              ? "bg-[#F66951] text-white"
+              : "text-white border-gray-500"
+              }`}
           >
             {i + 1}
           </button>

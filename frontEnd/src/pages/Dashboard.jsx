@@ -1,9 +1,10 @@
 import { FaUser, FaHistory, FaEdit, FaArrowLeft } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
-import { useState } from "react";
+import axios from 'axios';
+import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
-import OrderData from "../data/OrderData";
+import { getAllOrderData } from "../data/OrderData";
 import OrderCard from "../components/OrderCard";
 import DetailOrder from "../components/DetailOrder";
 
@@ -12,6 +13,19 @@ export default function AccountDashboard() {
   const [isOrderDetail, setIsOrderDetail] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   let user = JSON.parse(localStorage.getItem("user"));
+
+  const [OrderData, setOrderData] = useState(null);
+  const [thankYou, setThankYou] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllOrderData();
+      setOrderData(data);
+    }
+
+    fetchData();
+  }, []);
+
 
   return (
     <>
@@ -27,12 +41,11 @@ export default function AccountDashboard() {
 
             {/* My Account */}
             <button
-              onClick={() => setActiveMenu("account")}
+              onClick={() => { setActiveMenu("account"); setIsOrderDetail(false) }}
               className={`flex items-center gap-3 w-full mt-6 py-3 rounded-lg justify-center font-semibold transition
-                ${
-                  activeMenu === "account"
-                    ? "bg-[#E56F56] text-white cursor-default"
-                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${activeMenu === "account"
+                  ? "bg-[#E56F56] text-white cursor-default"
+                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
               `}
             >
@@ -43,10 +56,9 @@ export default function AccountDashboard() {
             <button
               onClick={() => setActiveMenu("order")}
               className={`flex items-center gap-3 w-full mt-4 py-3 rounded-lg justify-center transition
-                ${
-                  activeMenu === "order"
-                    ? "bg-[#E56F56] text-white cursor-default"
-                    : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
+                ${activeMenu === "order"
+                  ? "bg-[#E56F56] text-white cursor-default"
+                  : "border border-[#E56F56] text-gray-300 hover:bg-[#e56e5682] hover:text-white"
                 }
               `}
             >
@@ -141,6 +153,7 @@ export default function AccountDashboard() {
                       orderDetail={order}
                       setIsOrderDetail={setIsOrderDetail}
                       onSelect={(data) => {
+                        console.log("data : ", data)
                         setSelectedOrder(data);
                       }}
                     />
@@ -163,13 +176,61 @@ export default function AccountDashboard() {
                   <h1 className="text-3xl font-bold text-[#E56F56] mb-4">
                     ORDER DETAIL
                   </h1>
-                  <button className="px-7 py-2 bg-[#F66951] text-white rounded-full font-light">
-                    Selesaikan Pesanan
-                  </button>
+                  {(() => {
+                    const statusColorgKeys = [
+                      'Order Dikonfirmasi',
+                      'Order Dibuat',
+                      'Order Dipacking',
+                      'Order Siap Diambil',
+                      'Order Ditolak',
+                      'Order Selesai'
+                    ]
+                    const normalized = (selectedOrder.order_status || '').toString().toLowerCase()
+                    const selectedLabel = statusColorgKeys.find(k => k.toLowerCase().includes(normalized)) || selectedOrder.order_status
+                    const isCompletable = selectedLabel === 'Order Siap Diambil'
+                    const completeOrder = async () => {
+                      if (!isCompletable) return
+                      try {
+                        const res = await axios.patch(`${import.meta.env.VITE_API_URL}/api/orders/${selectedOrder.id}/complete`, {}, {
+                          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                        })
+                        // update selected order locally
+                        setSelectedOrder(res.data)
+                        // refresh user orders list
+                        const data = await getAllOrderData()
+                        setOrderData(data)
+                        setThankYou(true)
+                        setTimeout(() => setThankYou(false), 3000)
+                      } catch (err) {
+                        console.error(err)
+                        alert(err.response?.data?.message || 'Failed to complete order')
+                      }
+                    }
+
+                    return (
+                      <div className="flex items-center gap-4">
+                        <button
+                          onClick={completeOrder}
+                          disabled={!isCompletable}
+                          className={`px-7 py-2 text-white rounded-full font-light ${isCompletable ? 'bg-[#F66951]' : 'bg-[#F66951] opacity-60 cursor-not-allowed'}`}
+                        >
+                          Selesaikan Pesanan
+                        </button>
+                        {thankYou && <div className="text-green-300 font-semibold">Terima Kasih telah berbelanja</div>}
+                      </div>
+                    )
+                  })()}
                 </div>
 
                 <div>
-                  <DetailOrder orderData={selectedOrder} />
+                  <DetailOrder OrderData={selectedOrder} onComplete={async (newOrder) => {
+                    // update selected order locally and refresh user orders list
+                    setSelectedOrder(newOrder)
+                    const data = await getAllOrderData()
+                    setOrderData(data)
+                    setThankYou(true)
+                    setTimeout(() => setThankYou(false), 3000)
+                  }} />
                 </div>
 
                 <div className="mt-12 p-4 bg-[#1a1a1a] rounded-xl border border-[0.5px] border-[#E56F56] text-slate-50 transition-all duration-300 hover:shadow-lg hover:shadow-[#f6695133] hover:scale-[1.01] active:scale-[0.99]">

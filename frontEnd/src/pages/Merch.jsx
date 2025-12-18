@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import MerchGrid from "../components/MerchGrid";
-import MerchData from "../data/MerchData";
+import { getAllMerchData } from "../data/MerchData";
 import Pagination from "../components/Pagination";
 
 function Merch() {
   const [merchPage, setMerchPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(8);
+  const [MerchData, setMerchData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllMerchData();
+      setMerchData(data);
+    }
+
+    fetchData();
+  }, []);
 
   const lastMerchData = merchPage * postPerPage;
   const firstMerchData = lastMerchData - postPerPage;
