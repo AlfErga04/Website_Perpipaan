@@ -155,7 +155,7 @@ function FormHima() {
     
     try {
       // ✅ KIRIM KE LARAVEL BACKEND
-      const response = await fetch('http://localhost:8000/api/hima/daftar', {
+      const response = await fetch('http://db.hmtppns.my.id', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
