@@ -12,12 +12,51 @@ const DashboardAdmin = () => {
     const [pendingRejectOrderId, setPendingRejectOrderId] = useState(null)
     const [detailModalOpen, setDetailModalOpen] = useState(false)
     const [detailOrder, setDetailOrder] = useState(null)
+    // Form HIMA admin review
+    const [formHimaList, setFormHimaList] = useState([])
+    const [formHimaLoading, setFormHimaLoading] = useState(true)
+    const [formDetailOpen, setFormDetailOpen] = useState(false)
+    const [formDetailItem, setFormDetailItem] = useState(null)
 
     const API = import.meta.env.VITE_API_URL
 
     useEffect(() => {
         fetchOrders()
+        fetchFormHima()
     }, [])
+
+    const fetchFormHima = async () => {
+        setFormHimaLoading(true)
+        try {
+            const res = await axios.get(`${API}/api/form-hima`, {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            })
+            setFormHimaList(res.data || [])
+        } catch (err) {
+            console.error('Failed to fetch form-hima', err)
+            setFormHimaList([])
+        } finally {
+            setFormHimaLoading(false)
+        }
+    }
+
+    const handleFormStatusChange = async (id, status) => {
+        try {
+            const res = await axios.patch(`${API}/api/admin/form-hima/${id}`, { status }, {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
+            })
+            setFormHimaList((prev) => prev.map((it) => it.id === res.data.id ? res.data : it))
+        } catch (err) {
+            console.error('Failed to update status', err)
+            alert('Gagal mengubah status')
+        }
+    }
 
     const fetchOrders = async () => {
         setLoading(true)
@@ -174,10 +213,10 @@ const DashboardAdmin = () => {
             <div className="min-h-screen bg-[#151515] text-white p-10 items-start w-full">
                 <div className="max-w-[75%] m-auto">
                     <div className="flex items-center justify-between mb-6">
-                        <h1 className="text-3xl font-bold text-[#E56F56]">Admin — Orders</h1>
+                        <h1 className="text-3xl font-bold text-[#E56F56]">Admin — Panels</h1>
                         <div>
                             <button
-                                onClick={fetchOrders}
+                                onClick={() => { fetchOrders(); fetchFormHima(); }}
                                 className="bg-[#E56F56] text-white px-4 py-2 rounded-md font-semibold"
                             >
                                 Refresh
@@ -378,6 +417,43 @@ const DashboardAdmin = () => {
                             </div>
                         </div>
                     )}
+                    {/* Form HIMA Submissions */}
+                    <div className="mt-8">
+                        <h2 className="text-xl font-semibold text-[#E56F56] mb-3">Form HIMA Submissions</h2>
+                        {formHimaLoading ? (
+                            <p className="text-gray-300">Loading submissions…</p>
+                        ) : formHimaList.length === 0 ? (
+                            <p className="text-gray-300">No submissions yet.</p>
+                        ) : (
+                            <div className="space-y-3">
+                                {formHimaList.map((item) => (
+                                    <div key={item.id} className="bg-[#111827] rounded-xl p-4 border border-[#334155] flex items-center justify-between">
+                                        <div>
+                                            <div className="font-semibold">{item.name || '—'}</div>
+                                            <div className="text-sm text-gray-400">NIM: {item.nim || '—'} — Kelas: {item.class || '—'}</div>
+                                            <div className="text-xs mt-1">Status: <span className={`px-2 py-1 rounded ${item.status === 'accepted' ? 'bg-green-600' : item.status === 'rejected' ? 'bg-red-600' : 'bg-gray-600'}`}>{item.status || 'pending'}</span></div>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <select
+                                                value={item.status || 'pending'}
+                                                onChange={(e) => handleFormStatusChange(item.id, e.target.value)}
+                                                className="bg-[#111827] border border-gray-600 text-white p-1 rounded"
+                                            >
+                                                <option value="pending">pending</option>
+                                                <option value="accepted">accepted</option>
+                                                <option value="rejected">rejected</option>
+                                            </select>
+
+                                            <button
+                                                onClick={() => { setFormDetailItem(item); setFormDetailOpen(true) }}
+                                                className="ml-2 px-3 py-1 bg-transparent border border-white text-white rounded hover:bg-white hover:text-black"
+                                            >Detail</button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -442,6 +518,49 @@ const DashboardAdmin = () => {
                                 }}
                                 className="px-4 py-2 rounded bg-[#E56F56] text-white font-semibold"
                             >Open KTM</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Form HIMA detail modal */}
+            {formDetailOpen && formDetailItem && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-[#0f1720] rounded-lg p-6 w-[90%] max-w-md border border-[#E56F56]">
+                        <h3 className="text-lg font-semibold mb-2 text-[#E56F56]">Form HIMA Detail</h3>
+                        <div className="text-sm text-gray-300 mb-4 space-y-2">
+                            <div><strong>Name:</strong> <span className="text-white">{formDetailItem.name || '—'}</span></div>
+                            <div><strong>NIM:</strong> <span className="text-white">{formDetailItem.nim || '—'}</span></div>
+                            <div><strong>Class:</strong> <span className="text-white">{formDetailItem.class || '—'}</span></div>
+                            <div><strong>Cohort:</strong> <span className="text-white">{formDetailItem.cohort || '—'}</span></div>
+                            <div><strong>Reason:</strong> <div className="text-white">{formDetailItem.reason || '—'}</div></div>
+                            <div><strong>Experience:</strong> <div className="text-white">{formDetailItem.experience || '—'}</div></div>
+                        </div>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => { setFormDetailOpen(false); setFormDetailItem(null) }}
+                                className="px-4 py-2 rounded bg-gray-600 text-white"
+                            >Close</button>
+                            {formDetailItem.ktm_file && (
+                                <button
+                                    onClick={() => {
+                                        const path = formDetailItem.ktm_file || ''
+                                        const url = path.startsWith('http') ? path : `${API}/storage/${path}`
+                                        window.open(url, '_blank')
+                                    }}
+                                    className="px-4 py-2 rounded bg-[#E56F56] text-white font-semibold"
+                                >Open KTM</button>
+                            )}
+                            {formDetailItem.cv_file && (
+                                <button
+                                    onClick={() => {
+                                        const path = formDetailItem.cv_file || ''
+                                        const url = path.startsWith('http') ? path : `${API}/storage/${path}`
+                                        window.open(url, '_blank')
+                                    }}
+                                    className="px-4 py-2 rounded bg-[#57ad42] text-white font-semibold"
+                                >Open CV</button>
+                            )}
                         </div>
                     </div>
                 </div>

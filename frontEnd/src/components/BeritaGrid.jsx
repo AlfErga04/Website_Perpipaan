@@ -58,8 +58,7 @@ const BeritaGrid = () => {
                     </span>
                   </div> */}
 
-                  <Link
-                    to={`/news/${index}`}
+                  <Link to={`/news/${news.id}`}
                     className="bg-gray-100 text-gray-800 px-1 md:px-2 lg:px-3 py-1 text-center text-xs rounded hover:bg-[#F66951] hover:text-white transition-ease-in-out duration-300"
                   >
                     Read More
