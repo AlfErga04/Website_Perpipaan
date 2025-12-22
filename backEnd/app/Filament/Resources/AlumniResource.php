@@ -33,26 +33,47 @@ class AlumniResource extends Resource
     {
         return $form
             ->schema([
-            TextInput::make('nim')
-                ->label('NIM')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->maxLength(20),
+                TextInput::make('nim')
+                    ->label('NIM')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(20),
 
-            TextInput::make('name')
-                ->label('Nama')
-                ->required()
-                ->maxLength(100),
+                TextInput::make('name')
+                    ->label('Nama')
+                    ->required()
+                    ->maxLength(100),
 
-            Select::make('tahun_masuk')
-                ->label('Tahun Masuk')
-                ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
-                ->required(),
+                Select::make('tahun_masuk')
+                    ->label('Tahun Masuk')
+                    ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
+                    ->required(),
 
-            Select::make('tahun_lulus')
-                ->label('Tahun Lulus')
-                ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
-                ->required(),
+                Select::make('tahun_lulus')
+                    ->label('Tahun Lulus')
+                    ->options(array_combine(range(date('Y'), 1990), range(date('Y'), 1990)))
+                    ->required(),
+
+                // Sektor Pekerjaan
+                Select::make('job_sector')
+                    ->label('Sektor Pekerjaan')
+                    ->options([
+                        'maritim_perkapalan' => 'Industri maritim & perkapalan',
+                        'migas' => 'Industri migas',
+                        'energi_listrik' => 'Energi dan listrik',
+                        'kimia' => 'Industri kimia',
+                        'konstruksi_infrastruktur' => 'Konstruksi & infrastruktur',
+                        'lain_lain' => 'Lain-lain'
+                    ])
+                    ->searchable()
+                    ->required(),
+
+                // Tambahan baru — tempat bekerja
+                TextInput::make('company_name')
+                    ->label('Tempat Bekerja')
+                    ->maxLength(255)
+                    ->placeholder('Contoh: Pertamina, PLN, Waskita')
+                    ->nullable(),
             ]);
     }
 
@@ -60,11 +81,20 @@ class AlumniResource extends Resource
     {
         return $table
             ->columns([
-            TextColumn::make('nim')->sortable()->searchable(),
-            TextColumn::make('name')->label('Nama')->sortable()->searchable(),
-            TextColumn::make('tahun_masuk')->label('Masuk'),
-            TextColumn::make('tahun_lulus')->label('Lulus'),
-            TextColumn::make('created_at')->label('Dibuat')->dateTime('d M Y'),
+                TextColumn::make('nim')->sortable()->searchable(),
+                TextColumn::make('name')->label('Nama')->sortable()->searchable(),
+                TextColumn::make('tahun_masuk')->label('Masuk'),
+                TextColumn::make('tahun_lulus')->label('Lulus'),
+                TextColumn::make('created_at')->label('Dibuat')->dateTime('d M Y'),
+                // Kolom baru tempat bekerja
+                TextColumn::make('company_name')
+                    ->label('Tempat Bekerja')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime('d M Y'),
             ])
             ->filters([
                 //

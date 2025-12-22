@@ -17,6 +17,7 @@ class Alumni extends Model
         'name',
         'tahun_masuk',
         'tahun_lulus',
-        'job_sector'
+        'job_sector',
+        'company_name'
     ];
 }
