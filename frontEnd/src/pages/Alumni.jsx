@@ -3,9 +3,8 @@ import { List } from 'lucide-react';
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import AlumniTable from "../components/AlumniTable";
+import AlumniJobCharts from '../components/AlumniJobCharts';
 import { useEffect } from 'react';
-
-
 
 function Alumni() {
   return (
@@ -29,19 +28,22 @@ function Alumni() {
         </div>
       </div>
 
-        <div className="lg:mx-36 my-8 lg:my-12 flex flex-col items-center lg:items-start">
-            <div className="flex items-center gap-2">
-                <List className="hidden sm:block size-8"/><div className="text-lg font-bold">Daftar Alumni Teknik Perpipaan</div>
-            </div>
-            <div className="text-sm text-gray-300">Daftar alumni beserta tahun kelulusan</div>
+      <div className="lg:mx-36 my-8 lg:my-12 flex flex-col items-center lg:items-start">
+        <div className="flex justify-center w-full h-65">
+          <AlumniJobCharts />
         </div>
+        <div className="flex items-center gap-2">
+          <List className="hidden sm:block size-8" /><div className="text-lg font-bold">Daftar Alumni Teknik Perpipaan</div>
+        </div>
+        <div className="text-sm text-gray-300">Daftar alumni beserta tahun kelulusan</div>
+      </div>
 
       <div className="items-center justify-center max-w-[75%] mx-auto mt-4 md:mt-12 mb-14 opacity-0 animate-[fadeIn_0.5s_forwards]">
-        <AlumniTable/>
+        <AlumniTable />
       </div>
 
       <div>
-        <Footer/>
+        <Footer />
       </div>
 
     </div>

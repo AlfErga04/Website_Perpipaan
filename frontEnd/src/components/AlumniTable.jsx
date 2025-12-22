@@ -110,6 +110,7 @@ const AlumniTable = () => {
               <th className="px-4 py-2">Nama</th>
               <th className="px-4 py-2">Tahun masuk</th>
               <th className="px-4 py-2">Tahun lulus</th>
+              <th className="px-4 py-2">PT Bekerja</th>
               {/* <th className="px-4 py-2">Keterangan</th> */}
             </tr>
           </thead>
@@ -128,6 +129,7 @@ const AlumniTable = () => {
                 <td className="px-4 py-2">{alumni.name}</td>
                 <td className="px-4 py-2">{alumni.tahun_masuk}</td>
                 <td className="px-4 py-2">{alumni.tahun_lulus}</td>
+                <td className="px-4 py-2">{alumni.company_name}</td>
                 {/* <td className="px-4 py-2">{alumni.keterangan}</td> */}
               </tr>
             ))}
